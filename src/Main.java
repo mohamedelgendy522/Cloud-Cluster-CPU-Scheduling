@@ -26,7 +26,6 @@ public class Main {
         ACS scheduler = new ACS();
 
         scheduler.simulate(processes, contextSwitch, quantum);
-        scheduler.printMetrics(processes);
     }
 
     public static void testCase2() {
@@ -45,6 +44,5 @@ public class Main {
         ACS scheduler = new ACS();
 
         scheduler.simulate(processes, contextSwitch, quantum);
-        scheduler.printMetrics(processes);
     }
 }

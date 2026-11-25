@@ -21,16 +21,30 @@ public class RoundRobinTier {
         return quantumUsed >= quantum && p.getRemainingTime() > 0;
     }
 
-    public String getQueueState() {            
-        if (queue.isEmpty()) return "Tier 1: [Empty]";
-        StringBuilder sb = new StringBuilder("Tier 1: [");
-        boolean first = true;
-        for (Process p : queue) {
-            if (!first) sb.append(", ");
-            sb.append(p.getName()).append(" (remaining: ").append(p.getRemainingTime())
-                    .append(", Priority: ").append(p.getEffectivePriority()).append(")");
-            first = false;
-        }
-        return sb.append("]").toString();
+    public String getQueueState(Process runningProcess) {
+    StringBuilder sb = new StringBuilder("Tier 1: [");
+    boolean first = true;
+
+    if (runningProcess != null && runningProcess.getCurrentTier() == 1) {
+        sb.append(runningProcess.getName())
+          .append(" (remaining: ").append(runningProcess.getRemainingTime())
+          .append(", Priority: ").append(runningProcess.getEffectivePriority()).append(")");
+        first = false;
     }
+
+    for (Process p : queue) {
+        if (!first) sb.append(", ");
+
+        sb.append(p.getName())
+          .append(" (remaining: ").append(p.getRemainingTime())
+          .append(", Priority: ").append(p.getEffectivePriority());
+
+        sb.append(")");
+        first = false;
+    }
+
+    if (first) return "Tier 1: [Empty]";
+
+    return sb.append("]").toString();
+}
 }

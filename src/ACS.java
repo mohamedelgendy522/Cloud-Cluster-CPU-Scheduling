@@ -107,13 +107,18 @@ public class ACS extends Scheduler {
     }
 
     private void printTimeStep() {
-        String cpu = "IDLE";
-        if (csRemaining > 0) {
-            cpu = "CS " + lastExecuted.getName() + " -> " + currentProcess.getName();
-        } else if (currentProcess != null) {
-            cpu = currentProcess.getName() + " (Tier " + currentProcess.getCurrentTier() + ")";
-        }
-        String tier2State = tier2.isEmpty() ? "Tier 2: [Empty]" : tier2.getQueueState();
-        System.out.printf("Time %d | CPU: %s | %s | %s%n", currentTime, cpu, tier1.getQueueState(), tier2State);
+    String cpu = "IDLE";
+
+    if (csRemaining > 0) {
+        cpu = "CS " + lastExecuted.getName() + " -> " + currentProcess.getName();
+    } else if (currentProcess != null) {
+        cpu = currentProcess.getName() + " (Tier " + currentProcess.getCurrentTier() + ")";
     }
+
+    String tier1State = tier1.getQueueState(currentProcess);
+    String tier2State = tier2.isEmpty() ? "Tier 2: [Empty]" : tier2.getQueueState();
+
+    System.out.printf("Time %d | CPU: %s | %s | %s%n",
+            currentTime, cpu, tier1State, tier2State);
+}
 }
