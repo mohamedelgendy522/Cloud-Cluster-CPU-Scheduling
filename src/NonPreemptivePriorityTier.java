@@ -23,6 +23,10 @@ public class NonPreemptivePriorityTier {
         }
     }
 
+    private boolean isHigherPriority(Process p1, Process p2) {
+    return p1.getEffectivePriority() < p2.getEffectivePriority();
+    }
+
     public Process getNextProcess(int currentTime) {
         this.lastKnownTime = currentTime;
 
@@ -96,6 +100,25 @@ public class NonPreemptivePriorityTier {
     }
 
     public void applyAging(int currentTime) {
-        this.lastKnownTime = currentTime;
+    this.lastKnownTime = currentTime;
+
+    for (Process p : queue) {
+
+        if (p == runningProcess) {
+            continue;
+        }
+
+        int waitingTime = currentTime - p.getTier2EnterTime();
+
+        int agingSteps = waitingTime / agingInterval;
+
+        int newPriority = p.getInitialPriority() - agingSteps;
+
+        if (newPriority < 0) {
+            newPriority = 0;
+        }
+
+        p.setEffectivePriority(newPriority);
     }
+}
 }

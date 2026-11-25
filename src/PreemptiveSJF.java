@@ -65,7 +65,7 @@ public class PreemptiveSJF extends Scheduler {
             currentTime++;
 
             if (currentProcess.getRemainingTime() == 0) {
-                currentProcess.setFinishTime(currentTime);
+                currentProcess.setCompletionTime(currentTime);
                 readyProcesses.remove(currentProcess);
                 completed++;
                 currentProcess = null;
